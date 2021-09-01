@@ -11,7 +11,7 @@ using kao_net_app.Model.Auth.State;
 
 namespace kao_net_app.Controllers.Auth
 {
-    [Route("[controller]")]
+    [Route("state")]
     [ApiController]
     public class StateController : AbsAuthController
     {

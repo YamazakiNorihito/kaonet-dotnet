@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace kao_net_app.Controllers.Auth
 {
-    [Route("[controller]")]
+    [Route("auth")]
     [ApiController]
     abstract public class AbsAuthController : AbsBaseController
     {

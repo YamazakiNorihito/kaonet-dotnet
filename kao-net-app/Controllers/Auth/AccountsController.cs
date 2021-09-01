@@ -11,7 +11,7 @@ using Firebase.Auth;
 
 namespace kao_net_app.Controllers.Auth
 {
-    [Route("[controller]")]
+    [Route("accounts")]
     [ApiController]
     public class AccountsController : AbsAuthController
     {
