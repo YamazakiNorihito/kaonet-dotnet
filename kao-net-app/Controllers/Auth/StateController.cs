@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 using Firebase.Auth;
 using kao_net_app.Model.Auth.State;
+using kao_net_app.Model.Response;
 
 namespace kao_net_app.Controllers.Auth
 {
@@ -18,25 +19,36 @@ namespace kao_net_app.Controllers.Auth
 
         [HttpPost]
         [Route("[action]")]
-        public FirebaseAuth SignIn([FromBody] SignInModel requestdata)
+        public AbsBaseResponse SignIn([FromBody] SignInModel requestdata)
         {
-            var signInTask = _FirebaseAuthProvider.SignInWithEmailAndPasswordAsync(
-                                                    requestdata.Email,
-                                                    requestdata.Password);
+            AbsBaseResponse response = null;
 
-            signInTask.Wait();
+            try
+            {
+                var signInTask = _FirebaseAuthProvider.SignInWithEmailAndPasswordAsync(
+                                                        requestdata.Email,
+                                                        requestdata.Password);
 
-            FirebaseAuthLink signInResult = signInTask.Result;
+                signInTask.Wait();
+
+                FirebaseAuthLink signInResult = signInTask.Result;
 
 
-            FirebaseAuth response = null;
 
-            if (string.IsNullOrEmpty(signInResult.FirebaseToken))
-            {// error
+                if (string.IsNullOrEmpty(signInResult.FirebaseToken))
+                {// error
+                    response = new ValidResponse("SignInに失敗しました。");
+                }
+                else
+                {// success
+                    response = new SuccessResponse<FirebaseAuthLink>(signInResult);
+                }
             }
-            else
-            {// success
-                response = signInResult;
+            catch (Exception ex)
+            {
+                // todo
+                // log 出力
+                response = new ValidResponse("SignInに失敗しました。");
             }
 
             return response;

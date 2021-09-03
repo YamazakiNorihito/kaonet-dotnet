@@ -1,13 +1,8 @@
-﻿using kao_net_app.Model.Auth.Account;
-using Microsoft.AspNetCore.Http;
+﻿using Firebase.Auth;
+using kao_net_app.Model.Auth.Account;
+using kao_net_app.Model.Response;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-using Firebase.Auth;
-
 
 namespace kao_net_app.Controllers.Auth
 {
@@ -17,25 +12,32 @@ namespace kao_net_app.Controllers.Auth
     {
 
         [HttpPost]
-        public JsonResult Regist([FromBody] RegistModel requestdata)
+        public AbsBaseResponse Regist([FromBody] RegistModel requestdata)
         {
-            var task = _FirebaseAuthProvider.CreateUserWithEmailAndPasswordAsync(
-                                                    requestdata.Email,
-                                                    requestdata.Password,
-                                                    requestdata.Email, 
-                                                    true);
+            AbsBaseResponse response = null;
 
-            task.Wait();
-
-            FirebaseAuthLink createUserResult = task.Result;
-
-
-            object response = new
+            try
             {
-                createUserResult
-            };
+                var task = _FirebaseAuthProvider.CreateUserWithEmailAndPasswordAsync(
+                                                        requestdata.Email,
+                                                        requestdata.Password,
+                                                        requestdata.Email,
+                                                        true);
 
-            return new JsonResult(response);
+                task.Wait();
+
+                FirebaseAuthLink createUserResult = task.Result;
+                response = new SuccessResponse<FirebaseAuthLink>(createUserResult);
+
+            }
+            catch (Exception ex)
+            {
+                // todo
+                // log 出力
+                response = new ValidResponse("登録に失敗しました。");
+            }
+
+            return response;
         }
 
     }
