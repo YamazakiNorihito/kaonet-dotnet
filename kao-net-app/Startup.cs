@@ -1,15 +1,12 @@
+using kao_net_app.Configuration;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace kao_net_app
 {
@@ -25,11 +22,39 @@ namespace kao_net_app
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // jwt auth
+            services.Configure<FireBaseConfig>(Configuration.GetSection(nameof(FireBaseConfig)));
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "kao_net_app", Version = "v1" });
+            });
+
+            // jwt auth
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(jwt =>
+            {
+                var firebaseProjectId = Configuration[$"{nameof(FireBaseConfig)}:{nameof(FireBaseConfig.ProjectId)}"];
+
+                jwt.Authority = $"https://securetoken.google.com/{firebaseProjectId}";
+                jwt.SaveToken = true;
+                jwt.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = $"https://securetoken.google.com/{firebaseProjectId}",
+                    ValidateIssuer = false,
+                    ValidateAudience = true,
+                    ValidAudience = firebaseProjectId,
+                    ValidateLifetime = true,
+                    RequireExpirationTime = false,
+
+                };
             });
         }
 
@@ -45,6 +70,8 @@ namespace kao_net_app
 
             app.UseRouting();
 
+            // jwt auth
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

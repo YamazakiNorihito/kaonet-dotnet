@@ -1,14 +1,10 @@
-﻿using kao_net_app.Model.Auth.Account;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-using Firebase.Auth;
+﻿using Firebase.Auth;
 using kao_net_app.Model.Auth.State;
 using kao_net_app.Model.Response;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System;
 
 namespace kao_net_app.Controllers.Auth
 {
@@ -16,7 +12,6 @@ namespace kao_net_app.Controllers.Auth
     [ApiController]
     public class StateController : AbsAuthController
     {
-
         [HttpPost]
         [Route("[action]")]
         public AbsBaseResponse SignIn([FromBody] SignInModel requestdata)
@@ -33,15 +28,13 @@ namespace kao_net_app.Controllers.Auth
 
                 FirebaseAuthLink signInResult = signInTask.Result;
 
-
-
                 if (string.IsNullOrEmpty(signInResult.FirebaseToken))
                 {// error
                     response = new ValidResponse("SignInに失敗しました。");
                 }
                 else
                 {// success
-                    response = new SuccessResponse<FirebaseAuthLink>(signInResult);
+                    response = new SuccessResponse<object>(new { token = signInResult.FirebaseToken });
                 }
             }
             catch (Exception ex)
@@ -54,5 +47,26 @@ namespace kao_net_app.Controllers.Auth
             return response;
         }
 
+
+        [HttpGet]
+        [Route("[action]")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public AbsBaseResponse LogOut()
+        {
+            AbsBaseResponse response = null;
+
+            try
+            {
+                response = new SuccessResponse<string>("OK");
+            }
+            catch (Exception ex)
+            {
+                // todo
+                // log 出力
+                response = new ValidResponse("LogOutに失敗しました。");
+            }
+
+            return response;
+        }
     }
 }
