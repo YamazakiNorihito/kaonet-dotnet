@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace kao_net_app.Model.Auth.State
+namespace kao_net_app.Model.Request.Auth
 {
     public class SignInModel
     {

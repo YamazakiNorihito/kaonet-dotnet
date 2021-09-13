@@ -1,20 +1,18 @@
 ﻿using Firebase.Auth;
-using kao_net_app.Model.Auth.State;
+using kao_net_app.Model.Request.Auth;
 using kao_net_app.Model.Response;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 
 namespace kao_net_app.Controllers.Auth
 {
-    [Route("state")]
+    [ApiVersion("2")]
+    [Route("auth/signin")]
     [ApiController]
-    public class StateController : AbsAuthController
+    public class SignInController : AbsAuthController
     {
         [HttpPost]
-        [Route("[action]")]
-        public AbsBaseResponse SignIn([FromBody] SignInModel requestdata)
+        public AbsBaseResponse Post([FromBody] SignInModel requestdata)
         {
             AbsBaseResponse response = null;
 
@@ -42,28 +40,6 @@ namespace kao_net_app.Controllers.Auth
                 // todo
                 // log 出力
                 response = new ValidResponse("SignInに失敗しました。");
-            }
-
-            return response;
-        }
-
-
-        [HttpGet]
-        [Route("[action]")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public AbsBaseResponse LogOut()
-        {
-            AbsBaseResponse response = null;
-
-            try
-            {
-                response = new SuccessResponse<string>("OK");
-            }
-            catch (Exception ex)
-            {
-                // todo
-                // log 出力
-                response = new ValidResponse("LogOutに失敗しました。");
             }
 
             return response;

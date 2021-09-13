@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace kao_net_app.Controllers.Auth
 {
-    [Route("auth")]
     [ApiController]
     abstract public class AbsAuthController : AbsBaseController
     {

@@ -1,18 +1,17 @@
 ﻿using Firebase.Auth;
-using kao_net_app.Model.Auth.Account;
+using kao_net_app.Model.Request.Auth;
 using kao_net_app.Model.Response;
 using Microsoft.AspNetCore.Mvc;
 using System;
 
 namespace kao_net_app.Controllers.Auth
 {
-    [Route("accounts")]
+    [Route("auth/signup")]
     [ApiController]
-    public class AccountsController : AbsAuthController
+    public class SignUpController : AbsAuthController
     {
-
         [HttpPost]
-        public AbsBaseResponse Regist([FromBody] RegistModel requestdata)
+        public AbsBaseResponse Post([FromBody] SignupModel requestdata)
         {
             AbsBaseResponse response = null;
 

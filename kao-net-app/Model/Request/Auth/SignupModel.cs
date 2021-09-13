@@ -1,9 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
-namespace kao_net_app.Model.Auth.Account
+namespace kao_net_app.Model.Request.Auth
 {
-    public class RegistModel
+    public class SignupModel
     {
         [JsonProperty(PropertyName = "email")]
         public string Email { get; set; }
