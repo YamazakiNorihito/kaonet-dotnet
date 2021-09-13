@@ -6,7 +6,6 @@ using System;
 
 namespace kao_net_app.Controllers.Auth
 {
-    [ApiVersion("2")]
     [Route("auth/signin")]
     [ApiController]
     public class SignInController : AbsAuthController
