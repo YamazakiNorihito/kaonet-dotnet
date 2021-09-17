@@ -1,6 +1,4 @@
-﻿using Firebase.Auth;
-using kao_net_app.Model.Request.Auth;
-using kao_net_app.Model.Response;
+﻿using kao_net_app.Model.Response;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
