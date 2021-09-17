@@ -22,6 +22,17 @@ namespace kao_net_app
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options =>
+                {
+                    options.AddPolicy("EnableCROS", builder =>
+                    {
+                        builder.AllowAnyOrigin()
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
+                    });
+                }
+            );
+
             // jwt auth
             services.Configure<FireBaseConfig>(Configuration.GetSection(nameof(FireBaseConfig)));
 
@@ -69,6 +80,9 @@ namespace kao_net_app
             }
 
             app.UseRouting();
+
+
+            app.UseCors("EnableCROS");
 
             // jwt auth
             app.UseAuthentication();
