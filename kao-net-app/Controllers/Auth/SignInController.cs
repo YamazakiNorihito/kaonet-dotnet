@@ -31,7 +31,7 @@ namespace kao_net_app.Controllers.Auth
                 }
                 else
                 {// success
-                    response = new SuccessResponse<object>(new { token = signInResult.FirebaseToken });
+                    response = new SuccessResponse<FirebaseAuthLink>(signInResult);
                 }
             }
             catch (Exception ex)
