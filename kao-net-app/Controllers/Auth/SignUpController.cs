@@ -33,7 +33,7 @@ namespace kao_net_app.Controllers.Auth
             {
                 // todo
                 // log 出力
-                response = new ValidResponse("登録に失敗しました。");
+                response = new ValidResponse(ex);
             }
 
             return response;

@@ -14,10 +14,12 @@ namespace kao_net_app.Controllers.User
     {
         [HttpGet]
         [Route("{id}")]
-        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public AbsBaseResponse Get(string id)
         {
             AbsBaseResponse response = null;
+
+            return new SuccessResponse<string[]>(new[] { "OK" , id });
 
             try
             {
@@ -55,7 +57,7 @@ namespace kao_net_app.Controllers.User
             {
                 // todo
                 // log 出力
-                response = new ValidResponse("登録に失敗しました。");
+                response = new ValidResponse(ex);
             }
 
             return response;

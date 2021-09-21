@@ -38,7 +38,7 @@ namespace kao_net_app.Controllers.Auth
             {
                 // todo
                 // log 出力
-                response = new ValidResponse("SignInに失敗しました。");
+                response = new ValidResponse(ex);
             }
 
             return response;

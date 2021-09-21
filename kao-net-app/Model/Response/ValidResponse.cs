@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System;
 
 namespace kao_net_app.Model.Response
 {
@@ -10,6 +11,12 @@ namespace kao_net_app.Model.Response
         public ValidResponse(string message) : base(ResponseStatus.VALID)
         {
             this.Message = message;
+        }
+
+
+        public ValidResponse(Exception ex) : this(JsonConvert.SerializeObject(ex))
+        {
+
         }
     }
 }
