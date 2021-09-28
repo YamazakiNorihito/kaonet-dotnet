@@ -1,16 +1,16 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace kao_net_app.Model.Request.Auth
 {
     public class SignupModel
     {
-        [JsonProperty(PropertyName = "email")]
+        [JsonPropertyName("email")]
         public string Email { get; set; }
 
-        [JsonProperty(PropertyName = "password")]
+        [JsonPropertyName("password")]
         public string Password { get; set; }
 
-        [JsonProperty(PropertyName = "passwordConfirm")]
+        [JsonPropertyName("passwordConfirm")]
         public string Password_Confirm { get; set; }
 
     }

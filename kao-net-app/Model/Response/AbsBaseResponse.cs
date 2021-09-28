@@ -1,8 +1,7 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace kao_net_app.Model.Response
 {
-    [JsonObject]
     abstract public class AbsBaseResponse
     {
         public enum ResponseStatus
@@ -10,7 +9,7 @@ namespace kao_net_app.Model.Response
             SUCCESS,VALID
         }
 
-        [JsonProperty("status")]
+        [JsonPropertyName("status")]
         public int Status { get; }
 
         /// <summary>

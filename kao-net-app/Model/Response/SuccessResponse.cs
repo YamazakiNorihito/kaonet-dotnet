@@ -1,11 +1,10 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace kao_net_app.Model.Response
 {
-    [JsonObject]
     public class SuccessResponse<T> : AbsBaseResponse
     {
-        [JsonProperty("data")]
+        [JsonPropertyName("data")]
         public T Data { get; }
 
         public SuccessResponse(T data):base(ResponseStatus.SUCCESS)

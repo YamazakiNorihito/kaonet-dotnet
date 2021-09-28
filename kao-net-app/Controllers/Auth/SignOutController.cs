@@ -24,6 +24,8 @@ namespace kao_net_app.Controllers.Auth
             {
                 // todo
                 // log 出力
+                // todo  log 出力
+                this.HttpContext.Response.StatusCode = 400;
                 response = new ValidResponse("LogOutに失敗しました。");
             }
 

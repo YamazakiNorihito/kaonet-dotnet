@@ -57,6 +57,8 @@ namespace kao_net_app.Controllers.User
             {
                 // todo
                 // log 出力
+                // todo  log 出力
+                this.HttpContext.Response.StatusCode = 400;
                 response = new ValidResponse(ex);
             }
 
