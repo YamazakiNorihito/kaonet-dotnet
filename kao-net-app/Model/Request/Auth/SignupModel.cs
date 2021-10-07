@@ -10,8 +10,5 @@ namespace kao_net_app.Model.Request.Auth
         [JsonPropertyName("password")]
         public string Password { get; set; }
 
-        [JsonPropertyName("passwordConfirm")]
-        public string Password_Confirm { get; set; }
-
     }
 }

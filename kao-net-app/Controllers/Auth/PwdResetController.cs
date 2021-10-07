@@ -1,36 +1,55 @@
 ﻿using Firebase.Auth;
-using kao_net_app.Common;
-using kao_net_app.Model.Request.Auth;
 using kao_net_app.Model.Response;
 using kao_net_app.Model.Response.Auth;
 using Microsoft.AspNetCore.Mvc;
 using System;
 
+
 namespace kao_net_app.Controllers.Auth
 {
-    [Route("auth/signin")]
+    [Route("auth/pwdreset")]
     [ApiController]
-    public class SignInController : AbsAuthController
+    public class PwdResetController : AbsAuthController
     {
-        [HttpPost]
-        public AbsBaseResponse Post([FromBody] SignInModel requestdata)
+        [HttpGet]
+        public AbsBaseResponse Get(string email)
         {
             AbsBaseResponse response = null;
 
             try
             {
-                var signInTask = _FirebaseAuthProvider.SignInWithEmailAndPasswordAsync(
-                                                        requestdata.Email,
-                                                        requestdata.Password);
+                var resetTask = _FirebaseAuthProvider.SendPasswordResetEmailAsync(email);
 
-                signInTask.Wait();
+                resetTask.Wait();
+                response = new SuccessResponse<string>(string.Empty);
+            }
+            catch (Exception ex)
+            {
+                // todo  log 出力
+                this.HttpContext.Response.StatusCode = 400;
+                response = new ValidResponse(ex);
+            }
 
-                FirebaseAuthLink signInResult = signInTask.Result;
+            return response;
+        }
+
+        [HttpPut]
+        public AbsBaseResponse Put([FromBody] string idToken, string password)
+        {
+            AbsBaseResponse response = null;
+
+            try
+            {
+                var resetTask = _FirebaseAuthProvider.ChangeUserPassword(idToken, password);
+
+                resetTask.Wait();
+
+                FirebaseAuthLink signInResult = resetTask.Result;
 
                 if (string.IsNullOrEmpty(signInResult.FirebaseToken))
                 {// error
 
-                    throw new Exception("SignInに失敗しました。");
+                    throw new Exception("ChangePasswordに失敗しました。");
                 }
                 else
                 {// success
@@ -39,7 +58,6 @@ namespace kao_net_app.Controllers.Auth
                     authModel.Token = signInResult.FirebaseToken;
                     authModel.RefreshToken = signInResult.RefreshToken;
                     authModel.ExpiresIn = signInResult.ExpiresIn;
-                    authModel.LocalId = signInResult.User.LocalId;
 
                     response = new SuccessResponse<AuthLinkModel>(authModel);
                 }

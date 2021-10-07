@@ -22,11 +22,6 @@ namespace kao_net_app.Controllers.User
         /// </summary>
         protected FirebaseAuthProvider _FirebaseAuthProvider;
 
-
-        // TODO startup.cs 移動
-        private static string GOOGLE_PROJECT_ID = "kao-net";
-        private static string GOOGLE_CREDENTIALS = Path.Combine(AppDomain.CurrentDomain.BaseDirectory,
-                                                                "kao-net-firebase-secret.json");
         protected FirestoreDb _FirestoreDb;
 
         public AbsUserController()
@@ -34,7 +29,6 @@ namespace kao_net_app.Controllers.User
             this._FireBaseAuthConfig = new FirebaseConfig(_FireBaseApiKey);
             this._FirebaseAuthProvider = new FirebaseAuthProvider(this._FireBaseAuthConfig);
 
-            Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", GOOGLE_CREDENTIALS);
             _FirestoreDb = FirestoreDb.Create(GOOGLE_PROJECT_ID);
         }
 

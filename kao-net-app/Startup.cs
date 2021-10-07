@@ -7,11 +7,16 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System;
+using System.IO;
 
 namespace kao_net_app
 {
     public class Startup
     {
+        private static string GOOGLE_CREDENTIALS = Path.Combine(AppDomain.CurrentDomain.BaseDirectory,
+                                                                "kao-net-firebase-secret.json");
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -92,6 +97,8 @@ namespace kao_net_app
             {
                 endpoints.MapControllers();
             });
+
+            Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", GOOGLE_CREDENTIALS);
         }
     }
 }

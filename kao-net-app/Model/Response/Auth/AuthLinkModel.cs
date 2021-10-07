@@ -10,5 +10,7 @@ namespace kao_net_app.Model.Response.Auth
         public string RefreshToken { get; set; }
         [JsonPropertyName("expiresIn")]
         public int ExpiresIn { get; set; }
+        [JsonPropertyName("localId")]
+        public string LocalId { get; set; }
     }
 }

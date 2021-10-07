@@ -15,27 +15,27 @@ namespace kao_net_app.Controllers.User
         [HttpGet]
         [Route("{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public AbsBaseResponse Get(string id)
+        public AbsBaseResponse Get(string localId)
         {
             AbsBaseResponse response = null;
 
-            return new SuccessResponse<string[]>(new[] { "OK" , id });
+            return new SuccessResponse<string[]>(new[] { "OK" , localId });
 
             try
             {
-                string token = id;
+                string token = localId;
                 var signInTask = _FirebaseAuthProvider.SignInWithGoogleIdTokenAsync(token);
 
                 signInTask.Wait();
 
 
-                DocumentReference docref = _FirestoreDb.Collection("Add_Document_Custom").Document(id);
+                DocumentReference docref = _FirestoreDb.Collection("Add_Document_Custom").Document(localId);
                 Dictionary<string, object> data1 = new Dictionary<string, object>()
                 {
                     {"firstname", "aaaaa" },
                     { "lastname","bbbbb"},
                     {"phone nuber", 000011112222},
-                    {"postdata", id}
+                    {"postdata", localId}
                 };
 
                 /*

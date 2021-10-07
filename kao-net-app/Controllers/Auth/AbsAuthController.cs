@@ -1,5 +1,4 @@
 ﻿using Firebase.Auth;
-using Microsoft.AspNetCore.Mvc;
 
 namespace kao_net_app.Controllers.Auth
 {
